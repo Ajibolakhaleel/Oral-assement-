@@ -1,4 +1,134 @@
+This is  my question 
 LinkedList Manipulation
 
     Task: Write a TypeScript class for a linked list with methods to add, remove, and find elements.
     Focus: Class-based data structure and understanding of node manipulation.
+This is my answer 
+
+// Node structure for LinkedList
+class ListNode<T> {
+    data: T;                // The data stored in the node
+    next: ListNode<T> | null;  // Reference to the next node in the list
+
+    constructor(data: T) {
+        this.data = data;
+        this.next = null;  // Initially, the next node is null
+    }
+}
+
+// LinkedList class with custom methods
+class LinkedList<T> {
+    private head: ListNode<T> | null = null;  // Head of the linked list (starting point)
+
+    // Method to add an element to the end of the list
+    add(data: T): void {
+        const newNode = new ListNode(data);
+
+        if (this.head === null) {  // If the list is empty, set the head to the new node
+            this.head = newNode;
+        } else {
+            let current = this.head;
+            // Traverse to the end of the list
+            while (current.next !== null) {
+                current = current.next;
+            }
+            current.next = newNode;  // Set the next of the last node to the new node
+        }
+    }
+
+    // Method to remove an element by its value
+    remove(data: T): void {
+        if (this.head === null) {  // List is empty, nothing to remove
+            return;
+        }
+
+        // If the head contains the value to be removed
+        if (this.head.data === data) {
+            this.head = this.head.next;  // Move the head pointer to the next node
+            return;
+        }
+
+        // Traverse the list to find the node with the value
+        let current = this.head;
+        let previous: ListNode<T> | null = null;
+
+        while (current !== null && current.data !== data) {
+            previous = current;
+            current = current.next;
+        }
+
+        // If the node is found, unlink it from the list
+        if (current !== null) {
+            previous!.next = current.next;
+        }
+    }
+
+    // Method to find an element by its value
+    find(data: T): ListNode<T> | null {
+        let current = this.head;  // Start from the head
+
+        // Traverse the list to find the node
+        while (current !== null) {
+            if (current.data === data) {
+                return current;  // Return the node if found
+            }
+            current = current.next;
+        }
+
+        return null;  // If the element is not found
+    }
+
+    // Method to print all the elements in the list
+    print(): void {
+        let current = this.head;
+        const elements: T[] = [];
+
+        // Traverse the list and collect elements
+        while (current !== null) {
+            elements.push(current.data);
+            current = current.next;
+        }
+
+        // Print the list elements in a formatted way
+        console.log(elements.join(' -> '));
+    }
+
+    // Method to get the length of the linked list
+    length(): number {
+        let current = this.head;
+        let count = 0;
+
+        // Traverse the list and count the number of nodes
+        while (current !== null) {
+            count++;
+            current = current.next;
+        }
+
+        return count;
+    }
+}
+
+// Usage Example
+const linkedList = new LinkedList<number>();
+
+// Adding elements
+linkedList.add(10);
+linkedList.add(20);
+linkedList.add(30);
+
+console.log('Original List:');
+linkedList.print();  // Output: 10 -> 20 -> 30
+
+// Removing an element
+linkedList.remove(20);
+
+console.log('After removing 20:');
+linkedList.print();  // Output: 10 -> 30
+
+// Finding an element
+const foundNode = linkedList.find(30);
+console.log('Found Node:', foundNode?.data);  // Output: Found Node: 30
+
+// Getting the length of the list
+console.log('Length of the list:', linkedlist.length());  // Output: Length of the list: 2
+
